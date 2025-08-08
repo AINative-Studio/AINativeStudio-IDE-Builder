@@ -157,13 +157,12 @@ jobs:
     needs:
       - check
       - compile
-    runs-on: windows-2019
+    runs-on: [self-hosted, windows, x64]
     strategy:
       fail-fast: false
       matrix:
         vscode_arch:
           - x64
-          - arm64
     defaults:
       run:
         shell: bash
