@@ -5,11 +5,11 @@
 # to run with Bash: "C:\Program Files\Git\bin\bash.exe" ./dev/build.sh
 ###
 
-export APP_NAME="Void"
+export APP_NAME="AINative Studio"
 export BINARY_NAME="codium"
 export CI_BUILD="no"
-export GH_REPO_PATH="voideditor/void"
-export ORG_NAME="voideditor"
+export GH_REPO_PATH="AINativeStudio-IDE/ainative-studio"
+export ORG_NAME="AINative-Studio"
 export SHOULD_BUILD="yes"
 export SKIP_ASSETS="yes"
 export SKIP_BUILD="no"

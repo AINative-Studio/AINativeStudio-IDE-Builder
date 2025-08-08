@@ -6,14 +6,14 @@ set -e
 # include common functions
 . ./utils.sh
 
-# Void - disable icon copying, we already handled icons
+# AINative Studio - disable icon copying, we already handled icons
 # if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
 #   cp -rp src/insider/* vscode/
 # else
 #   cp -rp src/stable/* vscode/
 # fi
 
-# Void - keep our license...
+# AINative Studio - keep our license...
 # cp -f LICENSE vscode/LICENSE.txt
 
 cd vscode || { echo "'vscode' dir not found"; exit 1; }
@@ -29,7 +29,7 @@ echo "BINARY_NAME=\"${BINARY_NAME}\""
 echo "GH_REPO_PATH=\"${GH_REPO_PATH}\""
 echo "ORG_NAME=\"${ORG_NAME}\""
 
-echo "Applying patches at ../patches/*.patch..." # Void comment
+echo "Applying patches at ../patches/*.patch..." # AINative Studio comment
 for file in ../patches/*.patch; do
   if [[ -f "${file}" ]]; then
     apply_patch "${file}"
@@ -37,7 +37,7 @@ for file in ../patches/*.patch; do
 done
 
 if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
-  echo "Applying insider patches..." # Void comment
+  echo "Applying insider patches..." # AINative Studio comment
   for file in ../patches/insider/*.patch; do
     if [[ -f "${file}" ]]; then
       apply_patch "${file}"
@@ -46,7 +46,7 @@ if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
 fi
 
 if [[ -d "../patches/${OS_NAME}/" ]]; then
-  echo "Applying OS patches (${OS_NAME})..." # Void comment
+  echo "Applying OS patches (${OS_NAME})..." # AINative Studio comment
   for file in "../patches/${OS_NAME}/"*.patch; do
     if [[ -f "${file}" ]]; then
       apply_patch "${file}"
@@ -54,7 +54,7 @@ if [[ -d "../patches/${OS_NAME}/" ]]; then
   done
 fi
 
-echo "Applying user patches..." # Void comment
+echo "Applying user patches..." # AINative Studio comment
 for file in ../patches/user/*.patch; do
   if [[ -f "${file}" ]]; then
     apply_patch "${file}"
@@ -181,7 +181,7 @@ else
   setpath "product" "win32NameVersion" "Void"
   setpath "product" "win32RegValueName" "Void"
   setpath "product" "win32ShellNameShort" "Void"
-  # Void - already set in product
+  # AINative Studio - already set in product
   # setpath "product" "win32AppId" "{{88DA3577-054F-4CA1-8122-7D820494CFFB}"
   # setpath "product" "win32x64AppId" "{{9D394D01-1728-45A7-B997-A6C82C5452C3}"
   # setpath "product" "win32arm64AppId" "{{0668DD58-2BDE-4101-8CDA-40252DF8875D}"
@@ -200,7 +200,7 @@ cp package.json{,.bak}
 
 setpath "package" "version" "${RELEASE_VERSION%-insider}"
 
-replace 's|Microsoft Corporation|Void|' package.json
+replace 's|Microsoft Corporation|AINative Studio|' package.json
 
 cp resources/server/manifest.json{,.bak}
 
@@ -218,7 +218,7 @@ if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
   setpath "resources/server/manifest" "name" "Void - Insiders"
   setpath "resources/server/manifest" "short_name" "Void - Insiders"
 else
-  # Void already has this
+  # AINative Studio already has this
   setpath "resources/server/manifest" "name" "Void"
   setpath "resources/server/manifest" "short_name" "Void"
 fi
@@ -228,10 +228,10 @@ fi
 
 ../undo_telemetry.sh
 
-replace 's|Microsoft Corporation|Void|' build/lib/electron.js
-replace 's|Microsoft Corporation|Void|' build/lib/electron.ts
-replace 's|([0-9]) Microsoft|\1 Void|' build/lib/electron.js
-replace 's|([0-9]) Microsoft|\1 Void|' build/lib/electron.ts
+replace 's|Microsoft Corporation|AINative Studio|' build/lib/electron.js
+replace 's|Microsoft Corporation|AINative Studio|' build/lib/electron.ts
+replace 's|([0-9]) Microsoft|\1 AINative Studio|' build/lib/electron.js
+replace 's|([0-9]) Microsoft|\1 AINative Studio|' build/lib/electron.ts
 
 if [[ "${OS_NAME}" == "linux" ]]; then
   # microsoft adds their apt repo to sources
@@ -246,30 +246,30 @@ if [[ "${OS_NAME}" == "linux" ]]; then
 
   # fix the packages metadata
   # code.appdata.xml
-  sed -i 's|Visual Studio Code|Void|g' resources/linux/code.appdata.xml
+  sed -i 's|Visual Studio Code|AINative Studio|g' resources/linux/code.appdata.xml
   sed -i 's|https://code.visualstudio.com/docs/setup/linux|https://voideditor.com|' resources/linux/code.appdata.xml
   sed -i 's|https://code.visualstudio.com/home/home-screenshot-linux-lg.png|https://vscodium.com/img/vscodium.png|' resources/linux/code.appdata.xml
   sed -i 's|https://code.visualstudio.com|https://voideditor.com|' resources/linux/code.appdata.xml
 
   # control.template
-  sed -i 's|Microsoft Corporation <vscode-linux@microsoft.com>|Void Team <team@voideditor.com>|'  resources/linux/debian/control.template
-  sed -i 's|Visual Studio Code|Void|g' resources/linux/debian/control.template
+  sed -i 's|Microsoft Corporation <vscode-linux@microsoft.com>|AINative Studio Team <team@voideditor.com>|'  resources/linux/debian/control.template
+  sed -i 's|Visual Studio Code|AINative Studio|g' resources/linux/debian/control.template
   sed -i 's|https://code.visualstudio.com/docs/setup/linux|https://voideditor.com|' resources/linux/debian/control.template
   sed -i 's|https://code.visualstudio.com|https://voideditor.com|' resources/linux/debian/control.template
 
   # code.spec.template
-  sed -i 's|Microsoft Corporation|Void Team|' resources/linux/rpm/code.spec.template
-  sed -i 's|Visual Studio Code Team <vscode-linux@microsoft.com>|Void Team <team@voideditor.com>|' resources/linux/rpm/code.spec.template
-  sed -i 's|Visual Studio Code|Void|' resources/linux/rpm/code.spec.template
+  sed -i 's|Microsoft Corporation|AINative Studio Team|' resources/linux/rpm/code.spec.template
+  sed -i 's|Visual Studio Code Team <vscode-linux@microsoft.com>|AINative Studio Team <team@voideditor.com>|' resources/linux/rpm/code.spec.template
+  sed -i 's|Visual Studio Code|AINative Studio|' resources/linux/rpm/code.spec.template
   sed -i 's|https://code.visualstudio.com/docs/setup/linux|https://voideditor.com|' resources/linux/rpm/code.spec.template
   sed -i 's|https://code.visualstudio.com|https://voideditor.com|' resources/linux/rpm/code.spec.template
 
   # snapcraft.yaml
-  sed -i 's|Visual Studio Code|Void|'  resources/linux/rpm/code.spec.template
+  sed -i 's|Visual Studio Code|AINative Studio|'  resources/linux/rpm/code.spec.template
 elif [[ "${OS_NAME}" == "windows" ]]; then
   # code.iss
   sed -i 's|https://code.visualstudio.com|https://voideditor.com|' build/win32/code.iss
-  sed -i 's|Microsoft Corporation|Void|' build/win32/code.iss
+  sed -i 's|Microsoft Corporation|AINative Studio|' build/win32/code.iss
 fi
 
 cd ..

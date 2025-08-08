@@ -12,10 +12,10 @@ on:
       checkout_pr:
         type: string
         description: Checkout PR
-      void_commit: # Void added this
+      void_commit: # AINative Studio added this
         type: string
-        description: Checkout specific Void commit
-      void_release: # Void added this
+        description: Checkout specific AINative Studio commit
+      void_release: # AINative Studio added this
         type: string
         description: Custom release number
   repository_dispatch:
@@ -31,7 +31,7 @@ on:
     - '**/*.md'
 
 env:
-  APP_NAME: Void
+  APP_NAME: AINative Studio
   # ASSETS_REPOSITORY is where all the downloads are.
   # VSCodium has this be the current repo, voideditor/void-builder:
   # ASSETS_REPOSITORY: ${{ github.repository }}
@@ -80,9 +80,9 @@ jobs:
         if: env.VSCODE_ARCH == 'x64'
 
       - name: Clone VSCode repo
-        env: # Void added this
-          VOID_COMMIT: ${{ github.event.inputs.void_commit }} # Void added this
-          VOID_RELEASE: ${{ github.event.inputs.void_release }} # Void added this
+        env: # AINative Studio added this
+          VOID_COMMIT: ${{ github.event.inputs.void_commit }} # AINative Studio added this
+          VOID_RELEASE: ${{ github.event.inputs.void_release }} # AINative Studio added this
         run: . get_repo.sh
 
       - name: Check PR or cron
@@ -114,7 +114,7 @@ jobs:
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }} # Void bumped this to stronger
+          GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }} # AINative Studio bumped this to stronger
         run: ./release.sh
         if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
 
