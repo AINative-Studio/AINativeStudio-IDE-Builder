@@ -43,6 +43,9 @@ env:
 jobs:
   check:
     runs-on: [self-hosted, windows, x64]
+    defaults:
+      run:
+        shell: bash
     outputs:
       MS_COMMIT: ${{ env.MS_COMMIT }}
       MS_TAG: ${{ env.MS_TAG }}
@@ -81,6 +84,9 @@ jobs:
     needs:
       - check
     runs-on: [self-hosted, windows, x64]
+    defaults:
+      run:
+        shell: bash
     env:
       MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
       MS_TAG: ${{ needs.check.outputs.MS_TAG }}
