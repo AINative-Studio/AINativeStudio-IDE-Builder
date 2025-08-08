@@ -42,7 +42,7 @@ env:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, windows, x64]
     outputs:
       MS_COMMIT: ${{ env.MS_COMMIT }}
       MS_TAG: ${{ env.MS_TAG }}
@@ -80,7 +80,7 @@ jobs:
   compile:
     needs:
       - check
-    runs-on: ubuntu-22.04
+    runs-on: [self-hosted, windows, x64]
     env:
       MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
       MS_TAG: ${{ needs.check.outputs.MS_TAG }}
