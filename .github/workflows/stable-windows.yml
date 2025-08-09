@@ -67,7 +67,11 @@ jobs:
 
       - name: Install jq
         run: |
-          winget install jqlang.jq
+          echo "Installing jq with winget..."
+          winget install jqlang.jq --accept-package-agreements --accept-source-agreements
+          echo "Checking if jq is now available..."
+          where jq || echo "jq not found in PATH"
+          jq --version || echo "jq version check failed"
         continue-on-error: true
 
       - name: Switch to relevant branch
@@ -151,7 +155,11 @@ jobs:
 
       - name: Install jq
         run: |
-          winget install jqlang.jq
+          echo "Installing jq with winget..."
+          winget install jqlang.jq --accept-package-agreements --accept-source-agreements
+          echo "Checking if jq is now available..."
+          where jq || echo "jq not found in PATH"
+          jq --version || echo "jq version check failed"
         continue-on-error: true
         if: env.SHOULD_BUILD == 'yes'
 
