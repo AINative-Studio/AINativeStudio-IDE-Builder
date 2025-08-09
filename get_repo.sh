@@ -22,19 +22,19 @@ if [[ "${CI_BUILD}" != "no" ]]; then
   git config --global --add safe.directory "/__w/$( echo "${GITHUB_REPOSITORY}" | awk '{print tolower($0)}' )"
 fi
 
-VOID_BRANCH="main"
-echo "Cloning void ${VOID_BRANCH}..."
+AINATIVE_BRANCH="main"
+echo "Cloning AINative Studio IDE ${AINATIVE_BRANCH}..."
 
 mkdir -p vscode
 cd vscode || { echo "'vscode' dir not found"; exit 1; }
 
 git init -q
-git remote add origin https://github.com/voideditor/void.git
+git remote add origin https://github.com/AINative-Studio/AINativeStudio-IDE.git
 
 # Allow callers to specify a particular commit to checkout via the
 # environment variable VOID_COMMIT.  We still default to the tip of the
-# ${VOID_BRANCH} branch when the variable is not provided.  Keeping
-# VOID_BRANCH as "main" ensures the rest of the script (and downstream
+# ${AINATIVE_BRANCH} branch when the variable is not provided.  Keeping
+# AINATIVE_BRANCH as "main" ensures the rest of the script (and downstream
 # consumers) behave exactly as before.
 if [[ -n "${VOID_COMMIT}" ]]; then
   echo "Using explicit commit ${VOID_COMMIT}"
@@ -42,12 +42,12 @@ if [[ -n "${VOID_COMMIT}" ]]; then
   git fetch --depth 1 origin "${VOID_COMMIT}"
   git checkout "${VOID_COMMIT}"
 else
-  git fetch --depth 1 origin "${VOID_BRANCH}"
+  git fetch --depth 1 origin "${AINATIVE_BRANCH}"
   git checkout FETCH_HEAD
 fi
 
 MS_TAG=$( jq -r '.version' "package.json" )
-MS_COMMIT=$VOID_BRANCH # Void - MS_COMMIT doesn't seem to do much
+MS_COMMIT=$AINATIVE_BRANCH # AINative Studio - MS_COMMIT doesn't seem to do much
 VOID_VERSION=$( jq -r '.voidVersion' "product.json" ) # Void added this
 
 if [[ -n "${VOID_RELEASE}" ]]; then # Void added VOID_RELEASE as optional to bump manually
