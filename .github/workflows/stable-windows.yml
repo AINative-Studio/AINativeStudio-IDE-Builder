@@ -256,7 +256,8 @@ jobs:
         env:
           DISABLE_MSI: ${{ vars.DISABLE_STABLE_MSI }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash ./check_tags.sh
+        run: ./check_tags.sh
+        shell: bash
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Download vscode artifact
