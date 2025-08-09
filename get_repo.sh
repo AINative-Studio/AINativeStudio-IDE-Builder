@@ -60,14 +60,27 @@ fi
 
 echo "Using jq command: $JQ_CMD"
 
-MS_TAG=$( $JQ_CMD -r '.version' "package.json" )
+# Check if package.json is in root or in ainative-studio subdirectory
+if [ -f "package.json" ]; then
+    PACKAGE_DIR="."
+    echo "Found package.json in root directory"
+elif [ -f "ainative-studio/package.json" ]; then
+    PACKAGE_DIR="ainative-studio"
+    echo "Found package.json in ainative-studio subdirectory"
+else
+    echo "ERROR: package.json not found in root or ainative-studio subdirectory"
+    ls -la
+    exit 1
+fi
+
+MS_TAG=$( $JQ_CMD -r '.version' "$PACKAGE_DIR/package.json" )
 MS_COMMIT=$AINATIVE_BRANCH # AINative Studio - MS_COMMIT doesn't seem to do much
-VOID_VERSION=$( $JQ_CMD -r '.voidVersion' "product.json" ) # Void added this
+VOID_VERSION=$( $JQ_CMD -r '.voidVersion' "$PACKAGE_DIR/product.json" ) # Void added this
 
 if [[ -n "${VOID_RELEASE}" ]]; then # Void added VOID_RELEASE as optional to bump manually
   RELEASE_VERSION="${MS_TAG}${VOID_RELEASE}"
 else
-  VOID_RELEASE=$( $JQ_CMD -r '.voidRelease' "product.json" )
+  VOID_RELEASE=$( $JQ_CMD -r '.voidRelease' "$PACKAGE_DIR/product.json" )
   RELEASE_VERSION="${MS_TAG}${VOID_RELEASE}"
 fi
 # Void - RELEASE_VERSION is later used as version (1.0.3+RELEASE_VERSION), so it MUST be a number or it will throw a semver error in void
