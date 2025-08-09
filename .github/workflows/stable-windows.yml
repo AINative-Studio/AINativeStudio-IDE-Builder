@@ -133,10 +133,10 @@ jobs:
         run: bash ./get_pr.sh
 
       - name: Setup GCC
-        uses: egor-tensin/setup-gcc@v1
+        uses: egor-tensin/setup-mingw@v2
         with:
-          version: 10
           platform: x64
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
