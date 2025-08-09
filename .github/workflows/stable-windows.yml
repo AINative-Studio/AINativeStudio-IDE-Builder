@@ -58,6 +58,13 @@ jobs:
         with:
           ref: ${{ env.GITHUB_BRANCH }}
 
+      - name: Fix line endings for shell scripts
+        run: |
+          for /r . %%f in (*.sh) do (
+            powershell -Command "(Get-Content '%%f') -join \"`n\" | Set-Content -NoNewline '%%f'"
+          )
+        continue-on-error: true
+
       - name: Switch to relevant branch
         env:
           PULL_REQUEST_ID: ${{ github.event.inputs.checkout_pr }}
@@ -100,6 +107,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.GITHUB_BRANCH }}
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Fix line endings for shell scripts
+        run: |
+          for /r . %%f in (*.sh) do (
+            powershell -Command "(Get-Content '%%f') -join \"`n\" | Set-Content -NoNewline '%%f'"
+          )
+        continue-on-error: true
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Switch to relevant branch
@@ -188,6 +203,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.GITHUB_BRANCH }}
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Fix line endings for shell scripts
+        run: |
+          for /r . %%f in (*.sh) do (
+            powershell -Command "(Get-Content '%%f') -join \"`n\" | Set-Content -NoNewline '%%f'"
+          )
+        continue-on-error: true
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Switch to relevant branch
