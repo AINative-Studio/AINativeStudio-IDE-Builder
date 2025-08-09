@@ -310,8 +310,9 @@ jobs:
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }} # AINative Studio bumped this to stronger
-        run: bash ./release.sh
+          GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
+        run: ./release.sh
+        shell: bash
         if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
 
       - name: Update versions repo
