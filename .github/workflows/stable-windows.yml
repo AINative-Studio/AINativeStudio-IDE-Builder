@@ -95,7 +95,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHECK_ALL: 'yes'
-        run: bash ./check_tags.sh
+        run: ./check_tags.sh
+        shell: bash
 
   compile:
     needs:
