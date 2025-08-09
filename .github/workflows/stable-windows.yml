@@ -65,6 +65,12 @@ jobs:
           )
         continue-on-error: true
 
+      - name: Install jq
+        run: |
+          curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
+          move jq.exe C:\Windows\System32\jq.exe
+        continue-on-error: true
+
       - name: Switch to relevant branch
         env:
           PULL_REQUEST_ID: ${{ github.event.inputs.checkout_pr }}
@@ -142,6 +148,13 @@ jobs:
 
       - name: Install libkrb5-dev
         run: sudo apt-get update -y && sudo apt-get install -y libkrb5-dev
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Install jq
+        run: |
+          curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
+          move jq.exe C:\Windows\System32\jq.exe
+        continue-on-error: true
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Clone VSCode repo
