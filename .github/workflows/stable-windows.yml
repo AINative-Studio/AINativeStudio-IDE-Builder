@@ -68,7 +68,9 @@ jobs:
       - name: Install jq
         run: |
           curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
-          move jq.exe C:\Windows\System32\jq.exe
+          mkdir C:\tools 2>nul || echo Directory exists
+          move jq.exe C:\tools\jq.exe
+          echo C:\tools>>%GITHUB_PATH%
         continue-on-error: true
 
       - name: Switch to relevant branch
@@ -153,7 +155,9 @@ jobs:
       - name: Install jq
         run: |
           curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
-          move jq.exe C:\Windows\System32\jq.exe
+          mkdir C:\tools 2>nul || echo Directory exists
+          move jq.exe C:\tools\jq.exe
+          echo C:\tools>>%GITHUB_PATH%
         continue-on-error: true
         if: env.SHOULD_BUILD == 'yes'
 
