@@ -4,11 +4,18 @@
 # AINative Studio completely rewrote this file
 set -e
 
+echo "DEBUG: Checking token variables:"
+echo "GH_TOKEN: ${GH_TOKEN:-'(not set)'}"
+echo "GITHUB_TOKEN: ${GITHUB_TOKEN:-'(not set)'}"
+echo "GH_ENTERPRISE_TOKEN: ${GH_ENTERPRISE_TOKEN:-'(not set)'}"
+echo "GITHUB_ENTERPRISE_TOKEN: ${GITHUB_ENTERPRISE_TOKEN:-'(not set)'}"
+
 if [[ -z "${GH_TOKEN}" ]] && [[ -z "${GITHUB_TOKEN}" ]] && [[ -z "${GH_ENTERPRISE_TOKEN}" ]] && [[ -z "${GITHUB_ENTERPRISE_TOKEN}" ]]; then
   echo "Will not build because no GITHUB_TOKEN defined"
   exit 0
 else
   GITHUB_TOKEN="${GH_TOKEN:-${GITHUB_TOKEN:-${GH_ENTERPRISE_TOKEN:-${GITHUB_ENTERPRISE_TOKEN}}}}"
+  echo "DEBUG: Using token (length): ${#GITHUB_TOKEN}"
 fi
 
 # Support for GitHub Enterprise
