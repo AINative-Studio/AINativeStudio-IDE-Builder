@@ -67,8 +67,7 @@ jobs:
 
       - name: Install jq
         run: |
-          curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
-          echo %CD%>>%GITHUB_PATH%
+          winget install jqlang.jq
         continue-on-error: true
 
       - name: Switch to relevant branch
@@ -152,8 +151,7 @@ jobs:
 
       - name: Install jq
         run: |
-          curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
-          echo %CD%>>%GITHUB_PATH%
+          winget install jqlang.jq
         continue-on-error: true
         if: env.SHOULD_BUILD == 'yes'
 
