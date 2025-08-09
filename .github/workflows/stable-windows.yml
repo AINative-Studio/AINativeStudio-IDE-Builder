@@ -67,11 +67,12 @@ jobs:
 
       - name: Install jq
         run: |
-          echo "Installing jq with winget..."
-          winget install jqlang.jq --accept-package-agreements --accept-source-agreements
-          echo "Checking if jq is now available..."
-          where jq || echo "jq not found in PATH"
-          jq --version || echo "jq version check failed"
+          echo "Downloading jq directly..."
+          curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
+          echo "Current directory contents:"
+          dir
+          echo "Testing jq from current directory:"
+          .\jq.exe --version || echo "jq test failed"
         continue-on-error: true
 
       - name: Switch to relevant branch
@@ -155,11 +156,12 @@ jobs:
 
       - name: Install jq
         run: |
-          echo "Installing jq with winget..."
-          winget install jqlang.jq --accept-package-agreements --accept-source-agreements
-          echo "Checking if jq is now available..."
-          where jq || echo "jq not found in PATH"
-          jq --version || echo "jq version check failed"
+          echo "Downloading jq directly..."
+          curl -L -o jq.exe https://github.com/jqlang/jq/releases/latest/download/jq-windows-amd64.exe
+          echo "Current directory contents:"
+          dir
+          echo "Testing jq from current directory:"
+          .\jq.exe --version || echo "jq test failed"
         continue-on-error: true
         if: env.SHOULD_BUILD == 'yes'
 
