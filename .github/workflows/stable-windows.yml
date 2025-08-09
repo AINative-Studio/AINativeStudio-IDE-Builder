@@ -92,10 +92,7 @@ jobs:
         run: bash ./check_cron_or_pr.sh
 
       - name: Check existing VSCodium tags/releases
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHECK_ALL: 'yes'
-        run: bash ./check_tags.sh
+        run: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} bash ./check_tags.sh
 
   compile:
     needs:
@@ -309,9 +306,7 @@ jobs:
         if: env.SHOULD_BUILD == 'yes' && (env.SHOULD_DEPLOY == 'yes' || github.event.inputs.generate_assets == 'true')
 
       - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }} # AINative Studio bumped this to stronger
-        run: bash ./release.sh
+        run: GITHUB_TOKEN=${{ secrets.STRONGER_GITHUB_TOKEN }} bash ./release.sh
         if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
 
       - name: Update versions repo
