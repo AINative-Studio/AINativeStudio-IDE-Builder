@@ -46,14 +46,28 @@ else
   git checkout FETCH_HEAD
 fi
 
-MS_TAG=$( jq -r '.version' "package.json" )
+# Find jq command - try different locations
+if command -v jq >/dev/null 2>&1; then
+    JQ_CMD="jq"
+elif [ -f "../jq.exe" ]; then
+    JQ_CMD="../jq.exe"
+elif [ -f "../jq" ]; then
+    JQ_CMD="../jq"
+else
+    echo "ERROR: jq not found. Tried: jq, ../jq.exe, ../jq"
+    exit 1
+fi
+
+echo "Using jq command: $JQ_CMD"
+
+MS_TAG=$( $JQ_CMD -r '.version' "package.json" )
 MS_COMMIT=$AINATIVE_BRANCH # AINative Studio - MS_COMMIT doesn't seem to do much
-VOID_VERSION=$( jq -r '.voidVersion' "product.json" ) # Void added this
+VOID_VERSION=$( $JQ_CMD -r '.voidVersion' "product.json" ) # Void added this
 
 if [[ -n "${VOID_RELEASE}" ]]; then # Void added VOID_RELEASE as optional to bump manually
   RELEASE_VERSION="${MS_TAG}${VOID_RELEASE}"
 else
-  VOID_RELEASE=$( jq -r '.voidRelease' "product.json" )
+  VOID_RELEASE=$( $JQ_CMD -r '.voidRelease' "product.json" )
   RELEASE_VERSION="${MS_TAG}${VOID_RELEASE}"
 fi
 # Void - RELEASE_VERSION is later used as version (1.0.3+RELEASE_VERSION), so it MUST be a number or it will throw a semver error in void
