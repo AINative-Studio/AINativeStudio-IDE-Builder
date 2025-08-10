@@ -186,9 +186,7 @@ jobs:
       - name: Compress vscode artifact
         run: |
           echo Creating vscode archive...
-          cd vscode
-          tar -czf ../vscode.tar.gz --exclude="node_modules" --exclude=".build/node" --exclude=".git" .
-          cd ..
+          tar -czf vscode.tar.gz --exclude="vscode/node_modules" --exclude="vscode/.build/node" --exclude="vscode/.git" vscode
         shell: cmd
         if: env.SHOULD_BUILD == 'yes'
 
