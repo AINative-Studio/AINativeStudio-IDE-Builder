@@ -142,6 +142,8 @@ jobs:
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-make
             mingw-w64-ucrt-x86_64-pkg-config
+            mingw-w64-ucrt-x86_64-python
+            mingw-w64-ucrt-x86_64-python-pip
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Add MSYS2 to PATH
@@ -153,17 +155,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.18.2'
-        if: env.SHOULD_BUILD == 'yes'
-
-      - name: Set PowerShell execution policy for Python setup
-        run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-        shell: powershell
-        if: env.SHOULD_BUILD == 'yes'
-
-      - name: Setup Python 3
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Install libkrb5-dev
@@ -260,17 +251,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.18.2'
-        if: env.SHOULD_BUILD == 'yes'
-
-      - name: Set PowerShell execution policy for Python setup
-        run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-        shell: powershell
-        if: env.SHOULD_BUILD == 'yes'
-
-      - name: Setup Python 3
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Check existing VSCodium tags/releases
