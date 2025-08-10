@@ -11,6 +11,18 @@ tar -xzf ./vscode.tar.gz
 
 cd vscode || { echo "'vscode' dir not found"; exit 1; }
 
+# Check if package.json is in root or in ainative-studio subdirectory
+if [[ -f "package.json" ]]; then
+    echo "Found package.json in root directory"
+elif [[ -f "ainative-studio/package.json" ]]; then
+    echo "Found package.json in ainative-studio subdirectory"
+    cd ainative-studio || { echo "'ainative-studio' dir not found"; exit 1; }
+else
+    echo "ERROR: package.json not found in root or ainative-studio subdirectory"
+    ls -la
+    exit 1
+fi
+
 for i in {1..5}; do # try 5 times
   if [[ -f "package-lock.json" ]]; then
     npm ci && break
