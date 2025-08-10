@@ -31,6 +31,10 @@ cd vscode || { echo "'vscode' dir not found"; exit 1; }
 git init -q
 git remote add origin https://github.com/AINative-Studio/AINativeStudio-IDE.git
 
+echo "Setting git configurations for non-interactive mode..."
+git config --local core.askpass ""
+git config --local credential.helper ""
+
 # Allow callers to specify a particular commit to checkout via the
 # environment variable VOID_COMMIT.  We still default to the tip of the
 # ${AINATIVE_BRANCH} branch when the variable is not provided.  Keeping
@@ -39,10 +43,14 @@ git remote add origin https://github.com/AINative-Studio/AINativeStudio-IDE.git
 if [[ -n "${VOID_COMMIT}" ]]; then
   echo "Using explicit commit ${VOID_COMMIT}"
   # Fetch just that commit to keep the clone shallow.
-  git fetch --depth 1 origin "${VOID_COMMIT}"
+  echo "Fetching commit ${VOID_COMMIT}..."
+  git fetch --depth 1 --no-tags origin "${VOID_COMMIT}"
+  echo "Checking out ${VOID_COMMIT}..."
   git checkout "${VOID_COMMIT}"
 else
-  git fetch --depth 1 origin "${AINATIVE_BRANCH}"
+  echo "Fetching branch ${AINATIVE_BRANCH}..."
+  git fetch --depth 1 --no-tags origin "${AINATIVE_BRANCH}"
+  echo "Checking out FETCH_HEAD..."
   git checkout FETCH_HEAD
 fi
 
