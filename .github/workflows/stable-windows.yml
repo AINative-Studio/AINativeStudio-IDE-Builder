@@ -262,14 +262,27 @@ jobs:
           name: vscode
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Switch to Node.js 20+ with nvm
+      - name: Ensure Node.js 20+
         run: |
-          echo "Switching to Node.js 20 with nvm..."
-          nvm use 20 || nvm install 20
-          echo "Current Node.js version after nvm:"
+          echo "Current Node.js version:"
+          node --version || echo "Node.js not found"
+          
+          if command -v nvm &> /dev/null; then
+            echo "Using nvm to switch to Node.js 20..."
+            nvm use 20 || nvm install 20
+          else
+            echo "nvm not found, ensuring PATH includes GitHub Actions Node.js..."
+            export PATH="/opt/hostedtoolcache/node/20.18.2/x64/bin:$PATH"
+            # Try common Windows paths too
+            if [ -d "/c/hostedtoolcache/node" ]; then
+              export PATH="/c/hostedtoolcache/node/20.18.2/x64:$PATH"
+            fi
+          fi
+          
+          echo "Final Node.js version:"
           node --version
-          echo "Current npm version:"
-          npm --version
+          echo "Node.js path:"
+          which node
         shell: bash
         if: env.SHOULD_BUILD == 'yes'
 
