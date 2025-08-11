@@ -262,14 +262,15 @@ jobs:
           name: vscode
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Verify Node.js version
+      - name: Switch to Node.js 20+ with nvm
         run: |
-          echo "Current Node.js version:"
+          echo "Switching to Node.js 20 with nvm..."
+          nvm use 20 || nvm install 20
+          echo "Current Node.js version after nvm:"
           node --version
-          echo "Current npm version:" 
+          echo "Current npm version:"
           npm --version
-          echo "Node.js path:"
-          which node
+        shell: bash
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Build
