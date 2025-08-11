@@ -264,12 +264,10 @@ jobs:
 
       - name: Use correct Node.js version
         run: |
-          echo "Current Node.js: $(node --version)"
-          echo "Required: v20.18.1+"
-          # Add GitHub Actions Node.js to front of PATH
-          export PATH="$(dirname $(which node)):$PATH"
-          echo "After PATH update: $(node --version)"
-        shell: bash  
+          echo Current Node.js version:
+          node --version 2>nul || echo Node.js not found
+          echo Required: v20.18.1+
+        shell: cmd
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Build
