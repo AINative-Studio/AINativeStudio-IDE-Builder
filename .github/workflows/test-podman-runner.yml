@@ -1,0 +1,71 @@
+name: Test Podman Runner
+
+on:
+  workflow_dispatch:  # Manual trigger only
+  push:
+    paths:
+      - '.github/workflows/test-podman-runner.yml'  # Only trigger on changes to this file
+
+jobs:
+  test-environment:
+    runs-on: [self-hosted, linux, x64, podman, ephemeral]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Test Node.js environment
+        run: |
+          echo "=== Node.js Environment ==="
+          node --version
+          npm --version
+          which node
+          which npm
+          
+      - name: Test Python environment
+        run: |
+          echo "=== Python Environment ==="
+          python3 --version
+          which python3
+          
+      - name: Test build tools
+        run: |
+          echo "=== Build Tools ==="
+          gcc --version
+          make --version
+          git --version
+          
+      - name: Test basic JavaScript execution
+        run: |
+          echo "=== JavaScript Test ==="
+          echo 'console.log("Hello from Podman runner!");' > test.js
+          node test.js
+          
+      - name: Test npm package installation
+        run: |
+          echo "=== NPM Package Test ==="
+          npm init -y
+          npm install lodash
+          echo 'const _ = require("lodash"); console.log("Lodash version:", _.VERSION);' > lodash-test.js
+          node lodash-test.js
+          
+      - name: Test cross-compilation capability
+        run: |
+          echo "=== Cross-compilation Test ==="
+          # Test if we can install electron-builder (for cross-platform builds)
+          npm install -g electron-builder
+          electron-builder --version
+          
+      - name: Test workspace
+        run: |
+          echo "=== Workspace Info ==="
+          pwd
+          ls -la
+          echo "Available disk space:"
+          df -h .
+          echo "Memory info:"
+          free -h
+          
+      - name: Success message
+        run: |
+          echo "🎉 Podman runner test completed successfully!"
+          echo "Runner is ready for production workloads."
