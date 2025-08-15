@@ -1,0 +1,75 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        arch: [x64]
+        include:
+          - os: ubuntu-latest
+            arch: x64
+            os_name: linux
+          - os: macos-latest
+            arch: x64
+            os_name: osx
+          - os: windows-latest
+            arch: x64
+            os_name: windows
+    env:
+      OS_NAME: ${{ matrix.os_name }}
+      VSCODE_ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: bash ./build.sh
+
+      - name: Verify build directory
+        run: ls "VSCode-${{ env.OS_NAME }}-${{ matrix.arch }}" || exit 1
+
+      - name: Package assets
+        run: bash ./prepare_assets.sh
+
+      - name: Compute checksums
+        run: bash ./prepare_checksums.sh
+
+      - name: Upload assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: assets
+          path: assets
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ secrets.GITHUB_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download assets
+        uses: actions/download-artifact@v4
+        with:
+          name: assets
+          path: assets
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ASSETS_REPOSITORY: ${{ vars.ASSETS_REPOSITORY }}
+          RELEASE_VERSION: ${{ vars.RELEASE_VERSION }}
+          VOID_VERSION: ${{ vars.VOID_VERSION }}
+          MS_COMMIT: ${{ vars.MS_COMMIT }}
+          MS_TAG: ${{ vars.MS_TAG }}
+          VSCODE_QUALITY: ${{ vars.VSCODE_QUALITY }}
+        run: bash ./release.sh
+        if: env.GITHUB_TOKEN != ''
