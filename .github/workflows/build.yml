@@ -46,7 +46,7 @@ jobs:
       - name: Upload assets
         uses: actions/upload-artifact@v4
         with:
-          name: assets
+          name: assets-${{ matrix.os_name }}
           path: assets
 
   release:
@@ -59,7 +59,7 @@ jobs:
       - name: Download assets
         uses: actions/download-artifact@v4
         with:
-          name: assets
+          pattern: assets-*
           path: assets
 
       - name: Release
