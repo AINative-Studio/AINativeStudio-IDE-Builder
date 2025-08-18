@@ -29,7 +29,7 @@ jobs:
       OS_NAME: ${{ matrix.os_name }}
       VSCODE_ARCH: ${{ matrix.arch }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build
         run: bash ./build.sh
@@ -56,7 +56,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Download assets
         uses: actions/download-artifact@v4
