@@ -193,6 +193,20 @@ fi
 jsonTmp=$( jq -s '.[0] * .[1]' product.json ../product.json )
 echo "${jsonTmp}" > product.json && unset jsonTmp
 
+# Inject commit hash into product.json
+echo "Injecting commit hash into product.json..."
+if [[ -f "build/inject-commit.js" ]]; then
+  node build/inject-commit.js
+else
+  echo "WARNING: inject-commit.js not found, using BUILD_SOURCEVERSION"
+  # Fallback: use BUILD_SOURCEVERSION environment variable
+  if [[ -n "${BUILD_SOURCEVERSION}" ]]; then
+    jsonTmp=$( jq --arg commit "${BUILD_SOURCEVERSION}" '.commit = $commit' product.json )
+    echo "${jsonTmp}" > product.json && unset jsonTmp
+    echo "Set commit to ${BUILD_SOURCEVERSION}"
+  fi
+fi
+
 cat product.json
 
 # package.json

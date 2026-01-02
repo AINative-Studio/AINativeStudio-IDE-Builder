@@ -16,3 +16,56 @@ The  `.patch` files from VSCodium get rid of telemetry in AINative Studio (the c
 
 ## Rebasing
 - We often need to rebase `void` and `void-builder` onto `vscode` and `vscodium` to keep our build pipeline working when deprecations happen, but this is pretty easy. All the changes we made in `void/` are commented with the caps-sensitive word "AINative Studio" (except our images, which need to be done manually), so rebasing just involves copying the `vscode/` repo and searching "AINative Studio" to re-make all our changes. The same exact thing holds for copying the `vscodium/` repo onto this repo and searching "AINative Studio" and "voideditor" to keep our changes. Just make sure the vscode and vscodium versions align.
+
+## Building macOS Installers
+
+### Prerequisites
+- macOS 13+ (x64) or macOS 14+ (arm64)
+- Xcode Command Line Tools: `xcode-select --install`
+- Node.js 20.18.2+
+- Python 3.11 (for x64 builds)
+
+### Build Steps
+
+1. **Clone repository:**
+   ```bash
+   git clone https://github.com/AINative-Studio/AINativeStudio-IDE-Builder.git
+   cd AINativeStudio-IDE-Builder
+   ```
+
+2. **Set environment variables:**
+   ```bash
+   export VSCODE_ARCH=arm64  # or x64
+   export VSCODE_QUALITY=stable
+   export SHOULD_BUILD=yes
+   ```
+
+3. **Run build:**
+   ```bash
+   ./get_repo.sh
+   ./version.sh
+   ./prepare_vscode.sh
+   ./build.sh
+   ./prepare_assets.sh
+   ```
+
+4. **Find installer:**
+   ```bash
+   ls -lh assets/*.dmg
+   ```
+
+### Troubleshooting
+
+**"create-dmg: command not found"**
+```bash
+npm install -g create-dmg
+```
+
+**"product.json has null values"**
+- Ensure you've pulled latest changes with fixed product.json
+- Run: `cat product.json | jq '{version, quality}'`
+- Should show non-null values
+
+**"Code signing failed"**
+- Code signing is optional for local builds
+- Set `CERTIFICATE_OSX_P12_DATA=""` to skip signing
