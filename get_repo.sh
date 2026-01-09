@@ -84,11 +84,13 @@ elif [ -f "ainative-studio/package.json" ]; then
     PACKAGE_DIR="ainative-studio"
     echo "Found package.json in ainative-studio subdirectory"
     echo "Moving ainative-studio contents to root for build compatibility..."
-    # Move all contents from ainative-studio to root
-    shopt -s dotglob  # Include hidden files
-    mv ainative-studio/* .
-    shopt -u dotglob
-    rmdir ainative-studio
+    # Use rsync or cp to merge directories properly, then remove source
+    if command -v rsync >/dev/null 2>&1; then
+        rsync -a ainative-studio/ .
+    else
+        cp -r ainative-studio/. .
+    fi
+    rm -rf ainative-studio
     PACKAGE_DIR="."
     echo "Contents moved successfully"
 else
