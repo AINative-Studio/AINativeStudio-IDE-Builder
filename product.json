@@ -2,7 +2,7 @@
 	"nameShort": "AINative Studio",
 	"nameLong": "AINative Studio",
 	"applicationName": "ainative-studio",
-	"version": "1.4.9.0044",
+	"version": "1.5.0",
 	"quality": "stable",
 	"commit": "${COMMIT_HASH}",
 	"updateUrl": "https://api.ainative.studio/api/update",
