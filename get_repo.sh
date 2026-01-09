@@ -29,7 +29,15 @@ mkdir -p vscode
 cd vscode || { echo "'vscode' dir not found"; exit 1; }
 
 git init -q
-git remote add origin https://github.com/AINative-Studio/AINativeStudio-IDE.git
+
+# Use GitHub token for authentication if available (for private repos)
+if [[ -n "${GITHUB_TOKEN}" ]]; then
+  echo "Using authenticated access with GitHub token..."
+  git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/AINative-Studio/AINativeStudio-IDE.git"
+else
+  echo "Using unauthenticated access (repository must be public)..."
+  git remote add origin https://github.com/AINative-Studio/AINativeStudio-IDE.git
+fi
 
 echo "Setting git configurations for non-interactive mode..."
 git config --local core.askpass ""

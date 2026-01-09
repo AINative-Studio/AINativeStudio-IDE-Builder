@@ -64,6 +64,7 @@ jobs:
 
       - name: Clone VSCode repo
         env: # AINative Studio added this
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VOID_COMMIT: ${{ github.event.inputs.void_commit }} # AINative Studio added this
           VOID_RELEASE: ${{ github.event.inputs.void_release }} # AINative Studio added this
         run: ./get_repo.sh
@@ -135,6 +136,7 @@ jobs:
 
       - name: Clone VSCode repo
         env: # AINative Studio added this
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VOID_COMMIT: ${{ github.event.inputs.void_commit }} # AINative Studio added this
           VOID_RELEASE: ${{ github.event.inputs.void_release }} # AINative Studio added this
         run: ./get_repo.sh
