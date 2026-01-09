@@ -83,6 +83,14 @@ if [ -f "package.json" ]; then
 elif [ -f "ainative-studio/package.json" ]; then
     PACKAGE_DIR="ainative-studio"
     echo "Found package.json in ainative-studio subdirectory"
+    echo "Moving ainative-studio contents to root for build compatibility..."
+    # Move all contents from ainative-studio to root
+    shopt -s dotglob  # Include hidden files
+    mv ainative-studio/* .
+    shopt -u dotglob
+    rmdir ainative-studio
+    PACKAGE_DIR="."
+    echo "Contents moved successfully"
 else
     echo "ERROR: package.json not found in root or ainative-studio subdirectory"
     ls -la
